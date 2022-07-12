@@ -1,4 +1,6 @@
 import { User } from "../models/User.js";
+import {generateToken}  from "../utils/tokenManager.js";
+
 
 export const register =  async (req, res)=>{
   
@@ -35,8 +37,10 @@ export const login = async (req, res)=>{
         if(!respuestaPassword)
             return res.status(403).json({error: "Contraseña incorrecta"})
         
+           // Generar el token
+           const {token, expiresIn} = generateToken(user.id);
 
-        return res.json({ok: 'login'})
+        return res.json({token, expiresIn})
     } catch (error) {
         
     }
