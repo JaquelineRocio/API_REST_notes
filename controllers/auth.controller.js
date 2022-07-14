@@ -5,6 +5,7 @@ import {generateToken}  from "../utils/tokenManager.js";
 export const register =  async (req, res)=>{
   
     const {email, password} = req.body;
+  
     try {
         let user = await User.findOne({email})
         if(user) throw {code: 11000};
@@ -45,3 +46,12 @@ export const login = async (req, res)=>{
         
     }
 };
+
+export const infoUser = async(req, res) => {
+    try {
+        const user = await User.findOne(req.uid);
+        return res.json({user})
+    } catch (error) {
+        return res.status(500).json({error: "error de server"})
+    }
+}
