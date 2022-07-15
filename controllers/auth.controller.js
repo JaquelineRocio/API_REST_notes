@@ -65,3 +65,8 @@ export const refreshToken = (req, res) => {
         return res.status(500).json({ error: "error de server" });
     }
 };
+
+export const logout = (req, res) => {
+    res.clearCookie("refreshToken");
+    res.json({ ok: true });
+};
