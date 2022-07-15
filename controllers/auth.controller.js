@@ -14,8 +14,10 @@ export const register =  async (req, res)=>{
         await user.save()
 
         //jwt token
-
-        return res.status(201).json({ok: true})
+        const { token, expiresIn } = generateToken(user.id);
+        generateRefreshToken(user.id, res);
+        
+        return res.status(201).json({ token, expiresIn })
     } catch (error) {
         console.log(error);
         //Alternativa por mongoose
@@ -23,6 +25,7 @@ export const register =  async (req, res)=>{
         {
             return res.status(400).json({error: "Ya existe este usuario"})
         }
+        return res.status(500).json({ error: "Error de servidor" });
     }
 };
 
@@ -49,8 +52,10 @@ export const login = async (req, res)=>{
 
 export const infoUser = async(req, res) => {
     try {
-        const user = await User.findOne(req.uid).lean();
-        return res.json({email: user.email})
+        console.log(req.id)
+        const user = await User.findById(req.uid);
+        console.log({email: user.email, uid: user.id})
+        return res.json({email: user.email, uid: user.id})
     } catch (error) {
         return res.status(500).json({error: "error de server"})
     }
