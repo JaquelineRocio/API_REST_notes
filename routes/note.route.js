@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getNotes, createNote, getNote } from '../controllers/note.controller.js';
+import { getNotes, createNote, getNote, deleteNote } from '../controllers/note.controller.js';
 import { requireToken } from '../middlewares/requireToken.js';
 
 const noteRouter = Router();
@@ -14,6 +14,6 @@ noteRouter.post("/", requireToken, createNote);
 //PATCH/PUT update note
 
 //DELETE remove note
-
+noteRouter.delete("/:id", requireToken, deleteNote);
 
 export default noteRouter;

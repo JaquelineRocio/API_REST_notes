@@ -44,3 +44,21 @@ export const createNote = async (req, res)=>{
         return res.status(500).json({error: 'error de servidor'})
     }
 }
+
+export const deleteNote = async (req, res) =>{
+    try {
+        const {id} = req.params;
+        const note = await Note.findById(id);
+        if(!note) return res.status(404).json({error: 'No existe la nota'})
+        
+        if(!note.uid.equals(req.uid)) return res.status(401).json({error: 'No le pertenece el id'})
+        note.remove();
+        return res.json({note})
+    } catch (error) {
+        console.log(error);
+        if(error.kind === "ObjectId"){
+            return res.status(403).json({error: 'Formato id incorrecto'})
+        }
+        return res.status(500).json({error: 'error de servidor'});
+    }
+}
