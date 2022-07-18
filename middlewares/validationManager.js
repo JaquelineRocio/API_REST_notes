@@ -1,4 +1,4 @@
-import { validationResult, body} from "express-validator";
+import { validationResult, body, param} from "express-validator";
 
 const validationResultExpress = (req, res,  next)=>{
     const errors = validationResult(req);
@@ -39,5 +39,12 @@ export const bodyLoginValidator = [
     body('password', "Mínimo 6 carácteres")
     .trim()
     .isLength({min: 6}),
+    validationResultExpress,
+]
+export const paramsNoteValidator = [
+    param('id', "id invalido")
+    .trim()
+    .escape(),
+
     validationResultExpress,
 ]
